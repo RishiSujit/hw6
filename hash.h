@@ -21,6 +21,51 @@ struct MyStringHash {
     {
         // Add your code here
 
+        //initialize values
+        HASH_INDEX_T w[5] {0,0,0,0};
+
+        int idx = 4;
+        HASH_INDEX_T decimal = 0;
+
+
+        int end = k.length()-1;
+        int start = (end-5>0) ? end-5:0;
+        int next = start-1;
+
+        //iterate through length of 5 substring
+        while(start<=end)
+        {
+          //conver to corresponding number and update decimal
+          decimal = decimal*36 + letterDigitToNumber(k[start]);
+          ++start;
+
+          //check if end of substing is reached
+          if(start>end)
+          {
+            //update start and end
+            if(next >=5)
+            {
+              start = next -5;
+            }
+            else
+            {
+              start = 0;
+            }
+            end = next;
+            next = start-1;
+
+            w[idx--] = decimal;
+            decimal=0;
+          }
+        }
+        //calculate the final hash value
+        HASH_INDEX_T r = rValues[0]*w[0] + rValues[1]*w[1] + rValues[2]*w[2] + rValues[3]*w[3] +rValues[4]*w[4];
+
+        return r;
+
+      
+
+
 
     }
 
@@ -28,6 +73,16 @@ struct MyStringHash {
     HASH_INDEX_T letterDigitToNumber(char letter) const
     {
         // Add code here or delete this helper function if you do not want it
+
+        if(isdigit(letter))
+        {
+          return letter - '0' + 26;
+        }
+        else if(isalpha(letter))
+        {
+          return tolower(letter) - 'a';
+        }
+        return 0;
 
     }
 

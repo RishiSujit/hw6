@@ -95,5 +95,42 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
+  //check if currently within boundaries
+  if (r >= board.size() || c>= board.size())
+  {
+    return false;
+  }
+  //add the char to word being formed
+  word+= board[r][c];
+  //check if curr word is in dictionary
+  if(dict.find(word) != dict.end())
+  {
+    //check if valid prefix
+    if(prefix.find(word) != prefix.end())
+    {
+      //recursively continue
+      if(boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc))
+      {
+        return true;
+      }
+      else
+      {
+        //add word to result set
+        result.insert(word);
+        return true;
+      }
+    }
+    else
+    {
+      //if not valid preset keep going
+      result.insert(word);
+      return true;
+    }
+  }
+  //if curr word is not in dictionary continue exploring.
+  return boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc);
+
+  
+
 
 }
